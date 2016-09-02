@@ -28,6 +28,6 @@ func QuestionIndex(w http.ResponseWriter, r *http.Request) {
 
 func QuestionShow(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	todoId := vars["questId"]
-	fmt.Fprintln(w, "Question show:", todoId)
+	questId := vars["questId"]
+	fmt.Fprintln(w, "Question show:", questId)
 }
