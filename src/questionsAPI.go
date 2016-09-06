@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"spangle.org.uk"
+	"spangle.org.uk/questions/model"
 
 	"github.com/gorilla/mux"
 	"encoding/json"
@@ -25,12 +25,12 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func QuestionIndex(w http.ResponseWriter, r *http.Request) {
-	questions := spangle_org_uk.Questions{
-		spangle_org_uk.Question{Id: 1, Text: "Test question?"},
-		spangle_org_uk.Question{Id: 2, Text: "Testing again?"},
+	questionList := questions.Questions{
+		questions.Question{Id: 1, Text: "Test question?"},
+		questions.Question{Id: 2, Text: "Testing again?"},
 	}
 
-	json.NewEncoder(w).Encode(questions)
+	json.NewEncoder(w).Encode(questionList)
 }
 
 func QuestionShow(w http.ResponseWriter, r *http.Request) {
