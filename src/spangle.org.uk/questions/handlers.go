@@ -18,7 +18,11 @@ func QuestionIndex(w http.ResponseWriter, r *http.Request) {
 		questions.Question{Id: 2, Text: "Testing again?"},
 	}
 
-	json.NewEncoder(w).Encode(questionList)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(questionList); err != nil {
+		panic(err)
+	}
 }
 
 func QuestionShow(w http.ResponseWriter, r *http.Request) {
