@@ -1,9 +1,12 @@
 package questions
 
-import "time"
+import (
+	"time"
+	"github.com/jinzhu/gorm"
+)
 
 type Question struct {
-	Id		int		`json:"id"`
+	gorm.Model
 	Text		string		`json:"text"`
 	Period		time.Duration	`json:"period"`
 	Start		time.Time	`json:"start"`

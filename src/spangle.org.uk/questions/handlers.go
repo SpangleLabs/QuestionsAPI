@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"fmt"
+	"github.com/jinzhu/gorm"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -14,8 +15,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 func QuestionIndex(w http.ResponseWriter, r *http.Request) {
 	questionList := questions.Questions{
-		questions.Question{Id: 1, Text: "Test question?"},
-		questions.Question{Id: 2, Text: "Testing again?"},
+		questions.Question{Text: "Test question?"},
+		questions.Question{Text: "Testing again?"},
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
@@ -26,7 +27,25 @@ func QuestionIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func QuestionShow(w http.ResponseWriter, r *http.Request) {
+	// Get input variables
 	vars := mux.Vars(r)
 	questId := vars["questId"]
-	fmt.Fprintln(w, "Question show:", questId)
+
+	// Connect to database
+	db, err := gorm.Open("sqlite3", "test.db")
+	if err != nil {
+		panic("Failed to connect to database.")
+	}
+	defer db.Close()
+
+	// Get question
+	var question questions.Question
+	db.First(&question, questId)
+
+	// Format and write output
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(question); err != nil {
+		panic(err)
+	}
 }
